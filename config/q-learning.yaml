@@ -28,6 +28,6 @@ FrozenLake8x8-v1:
   epsilon_final: 0.001
   epsilon_decay: 1.0e+5
 
-  max_frames: 1.0e+6
+  max_frames: 1.50e+6
   stopping_reward: 0.85
 
