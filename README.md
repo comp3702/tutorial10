@@ -13,6 +13,12 @@ OpenAI Gym, PyYaml and Numpy
 
     pip install gym numpy pyyaml
 
+#### Gym 0.26.2
+There was a change in the OpenAI Gym's API recently and the step method now returns `next_state, reward, terminated, truncated, info`.
+This used to be only `next_state, reward, done, info` - `terminated` and `truncated` used to be combined into `done`.
+
+As such make sure you have at least version `0.26.2` or change the lines where `step()` and `reset()` are called with the old API.
+
 ### Running the Solutions
 
 #### SimpleGridWorld
