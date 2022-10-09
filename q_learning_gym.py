@@ -1,28 +1,31 @@
+import argparse
 import math
 import random
 import gym
+import yaml
 
 import numpy as np
 
-env = gym.make('Taxi-v3')
+parser = argparse.ArgumentParser()
+parser.add_argument("-e", "--env", default="Taxi-v3", help="Full name of the environment, e.g. Taxi-v3, FrozenLake-v1, etc.")
+parser.add_argument("-c", "--config_file", default="config/q-learning.yaml", help="Config file with hyper-parameters")
+args = parser.parse_args()
+
+env = gym.make(args.env)
 
 # Q table - a table of states x actions -> Q value for each possible action in each state
 q_table = np.random.rand(env.observation_space.n, env.action_space.n)
 # q_table = np.zeros((env.observation_space.n, env.action_space.n))
 
-# Hyperparameters
-alpha = 0.1
-gamma = 0.9
-epsilon_start = 1.0
-epsilon_final = 0.01
-epsilon_decay = 10000
+# Hyperparameters for the requried environment
+params = yaml.load(open(args.config_file), Loader=yaml.FullLoader)[args.env]
 
-max_episodes = 2000
 frame_idx = 0
-max_steps_per_episode = 100000
 rewards = []
+episode_no = 0
+max_r100 = -math.inf
 
-for episode_no in range(max_episodes):
+while True:
     state, _ = env.reset()
 
     episode_reward = 0
@@ -30,10 +33,8 @@ for episode_no in range(max_episodes):
     episode_start = frame_idx
     reward = 0
 
-    # print(q_table)
-
-    while not done and (frame_idx - episode_start < max_steps_per_episode):
-        epsilon = epsilon_final + (epsilon_start - epsilon_final) * math.exp(-1.0 * frame_idx / epsilon_decay)
+    while not done:
+        epsilon = params['epsilon_final'] + (params['epsilon_start'] - params['epsilon_final']) * math.exp(-1.0 * frame_idx / params['epsilon_decay'])
         if random.uniform(0, 1) < epsilon:
             # explore - i.e. choose a random action
             action = env.action_space.sample()
@@ -56,14 +57,26 @@ for episode_no in range(max_episodes):
         else:
             Q_next_state_max = np.max(q_table[next_state])
 
-        Q_new = Q_old + alpha * (reward + gamma * Q_next_state_max - Q_old)
+        Q_new = Q_old + params['alpha'] * (reward + params['gamma'] * Q_next_state_max - Q_old)
 
         q_table[state, action] = Q_new
 
         state = next_state
 
     rewards.append(reward)
-    print(f"Episode {episode_no}, steps taken {frame_idx - episode_start}, reward: {episode_reward}, R100: {np.mean(rewards[-100:])}, epsilon: {epsilon}")
+    r100 = np.mean(rewards[-100:])
+    if r100 > max_r100:
+        max_r100 = r100
+    print(f"Frame: {frame_idx}, Episode {episode_no}, steps taken {frame_idx - episode_start}, reward: {episode_reward}, R100: {r100}, max R100: {max_r100}, epsilon: {epsilon}")
+
+    if r100 >= params['stopping_reward']:
+        print(f"Solved after {frame_idx} frames with R100 of {r100}")
+        break
+
+    if frame_idx > params['max_frames']:
+        print(f"Ran out of time after {frame_idx} frames")
+        break
+    episode_no += 1
 
 print(f"Steps taken {frame_idx}")
 print(q_table)

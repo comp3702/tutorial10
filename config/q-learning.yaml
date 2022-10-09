@@ -1,0 +1,33 @@
+Taxi-v3:
+  alpha: 0.1
+  gamma: 0.9
+
+  epsilon_start: 1.0
+  epsilon_final: 0.01
+  epsilon_decay: 1.0e+4
+
+  max_frames: 1.0e+5
+  stopping_reward: 21
+
+FrozenLake-v1:
+  alpha: 0.1
+  gamma: 0.9
+
+  epsilon_start: 1.0
+  epsilon_final: 0.01
+  epsilon_decay: 1.0e+5
+
+  max_frames: 1.0e+6
+  stopping_reward: 0.7
+
+FrozenLake8x8-v1:
+  alpha: 0.05
+  gamma: 0.9
+
+  epsilon_start: 1.0
+  epsilon_final: 0.001
+  epsilon_decay: 1.0e+5
+
+  max_frames: 1.0e+6
+  stopping_reward: 0.85
+
