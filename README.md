@@ -4,14 +4,14 @@ This is a significant departure from the official solutions:
 
 - the GridWorld is modeled as episodic task
 - removed EXIT_STATE - the episode ends when either of the reward states is reached
-- the solution code is formulated as reinforcement learning problem tracking progress through episodes and R100 (average reward of the past 100 episodes)
+- the solution code is formulated as reinforcement learning problem, tracking progress through episodes and R100 (average reward of the past 100 episodes)
 - unlike the official solution, consistently finds the same policy
 - includes sample hyper-parameters for solving basic OpenAI Gym problems (Taxi-v3, FrozenLake-v1, FrozenLake8x8-v1)
 
 ### Dependencies
-OpenAI Gym and Numpy
+OpenAI Gym, PyYaml and Numpy
 
-    pip install gym numpy
+    pip install gym numpy pyyaml
 
 ### Running the Solutions
 

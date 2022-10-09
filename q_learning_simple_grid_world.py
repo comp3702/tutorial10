@@ -16,7 +16,7 @@ alpha = 0.1
 gamma = 0.9
 epsilon_start = 1.0
 epsilon_final = 0.01
-epsilon_decay = 10000
+epsilon_decay = 1000
 
 max_episodes = 1000
 frame_idx = 0
