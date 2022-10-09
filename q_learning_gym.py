@@ -11,14 +11,19 @@ parser.add_argument("-e", "--env", default="Taxi-v3", help="Full name of the env
 parser.add_argument("-c", "--config_file", default="config/q-learning.yaml", help="Config file with hyper-parameters")
 args = parser.parse_args()
 
+# Hyperparameters for the requried environment
+hypers = yaml.load(open(args.config_file), Loader=yaml.FullLoader)
+
+if args.env not in hypers:
+    raise Exception(f'Hyper-parameters not found for env {args.env} - please add it to the config file (config/q-learning.yaml)')
+params = hypers[args.env]
+
 env = gym.make(args.env)
 
 # Q table - a table of states x actions -> Q value for each possible action in each state
 q_table = np.random.rand(env.observation_space.n, env.action_space.n)
 # q_table = np.zeros((env.observation_space.n, env.action_space.n))
 
-# Hyperparameters for the requried environment
-params = yaml.load(open(args.config_file), Loader=yaml.FullLoader)[args.env]
 
 frame_idx = 0
 rewards = []
