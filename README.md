@@ -28,10 +28,10 @@ The hyper-parameters are hardcoded to make it easier to follow.
 
     python q_learning_simple_grid_world.py
 
-#### OpenAI Gym Environments
+#### [OpenAI Gym](https://www.gymlibrary.dev/) Environments
 
 [q_learning_gym.py](q_learning_gym.py) has the same code but the hyper-params are moved to the [config file](config/q-learning.yaml) for easier experimentation.
-The sample hyper-parameters can solve both Taxi and FrozenLake every time (it did it in my tests) and FrozenLake8x8 most of the times.
+The sample hyper-parameters can solve both [Taxi](https://www.gymlibrary.dev/environments/toy_text/taxi/) and [FrozenLake](https://www.gymlibrary.dev/environments/toy_text/frozen_lake/) every time (it did it in my tests) and FrozenLake8x8 most of the times.
 You can experiment to see how the performance changes.
 
     python q_learning_gym.py -e Taxi-v3
