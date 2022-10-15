@@ -43,6 +43,7 @@ for episode_no in range(max_episodes):
             action = np.argmax(q_table[state_index])
 
         next_state, reward, done = env.step(state, action)
+        episode_reward += reward
         frame_idx += 1
 
         # ===== update value table =====
