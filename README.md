@@ -50,12 +50,12 @@ You will need to tune the hyper-parameters for Assignment 3.
 
 ### Progress Indicators
 While tuning, you need something to provide feedback throughout the training (not only at the end of the training).
-For discrete problems R100 (mean reward over past 100 episodes) and L100 (mean loss over past 100 steps).
+For discrete problems, R100 (mean reward over past 100 episodes) and L100 (mean loss over past 100 steps) is used.
 
 You want L100 to be decreasing and the R100 to be increasing.
 It is also common to use R100 threshold for training termination. While you want this to be high, pushing it too high may lead to brittle policies that will not perform as well during non-exploration evaluation.
 
-For Assignment 3, it may be useful to utilize `environment.evaluation_reward_tgt`. It may be good to target a bit lower value than this, however, because the the problem is essentially a random function, going too low may produce a worse policy.
+For Assignment 3, it may be useful to utilize `environment.evaluation_reward_tgt`. It may be good to target a bit lower value than this (e.g. x0.8), however, because the the problem is essentially a random function, going too low may actually produce a worse policy.
 
 ### Tunable Parameters
 For Q-Learning/SARSA there are 3 parameters:
@@ -66,7 +66,9 @@ For Q-Learning/SARSA there are 3 parameters:
 #### Alpha
 Alpha controls the step size or how fast the training will be converging.
 Setting it higher (e.g. 0.1 - the actual value depends on the environment) usually increases the initial progress, but may "overshoot" the optimal solution.
-Setting it lower (e.g. 0.001) usually leads to very slow training that may get stuck in the initial exploration. If you see a steady progress (increasing R100 and decreasing L100), it should usually converge.
+Setting it lower (e.g. 0.001) usually leads to very slow training that may get stuck in the initial exploration, but if you see a steady progress (increasing R100 and decreasing L100), it should usually converge.
+
+Experiment with different values and watch the R100.
 
 #### Epsilon
 Some environments require more exploration and/or exploration over longer periods of training (e.g. as the agent gets further, it faces new/different challenges).
