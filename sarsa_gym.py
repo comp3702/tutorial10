@@ -5,6 +5,7 @@ import gym
 import yaml
 
 import numpy as np
+from numpy import ndarray
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-e", "--env", default="Taxi-v3", help="Full name of the environment, e.g. Taxi-v3, FrozenLake-v1, etc.")
@@ -21,17 +22,26 @@ params = hypers[args.env]
 env = gym.make(args.env)
 
 # Q table - a table of states x actions -> Q value for each possible action in each state
-q_table = np.random.rand(env.observation_space.n, env.action_space.n)
-# q_table = np.zeros((env.observation_space.n, env.action_space.n))
+# should be initialized randomly !!! except for Q[terminal] !!! - but we don't know which one is terminal
+q_table = np.zeros((env.observation_space.n, env.action_space.n))
+
+def choose_action(state: int, epsilon: float):
+    if random.uniform(0, 1) < epsilon:
+        # explore - i.e. choose a random action
+        return env.action_space.sample()
+    else:
+        return np.argmax(q_table[state])
 
 
 frame_idx = 0
 rewards = []
 episode_no = 0
 max_r100 = -math.inf
+epsilon = params['epsilon_start']
 
 while True:
     state, _ = env.reset()
+    action = choose_action(state, epsilon)
 
     episode_reward = 0
     done = False
@@ -40,11 +50,6 @@ while True:
 
     while not done:
         epsilon = params['epsilon_final'] + (params['epsilon_start'] - params['epsilon_final']) * math.exp(-1.0 * frame_idx / params['epsilon_decay'])
-        if random.uniform(0, 1) < epsilon:
-            # explore - i.e. choose a random action
-            action = env.action_space.sample()
-        else:
-            action = np.argmax(q_table[state])
 
         next_state, reward, terminated, truncated, _ = env.step(action)
         done = terminated or truncated
@@ -54,19 +59,18 @@ while True:
         # ===== update value table =====
         # Q_new(s,a) <-- Q_old(s,a) + alpha * (TD_error)
         # Q_new(s,a) <-- Q_old(s,a) + alpha * (TD_target - Q_old(s, a))
-        # Q_new(s,a) <-- Q_old(s,a) + alpha * (R + gamma * max_a(Q(s',a) - Q_old(s, a))
-        # target = r + gamma * max_{a' in A} Q(s', a')
+        # Q_new(s,a) <-- Q_old(s,a) + alpha * (R + gamma*Q(s',a') - Q_old(s, a))
+        # S' == next_state, a' == next_action
+        next_action = choose_action(next_state, epsilon)
         Q_old = q_table[state, action]
-        if done:
-            Q_next_state_max = 0
-        else:
-            Q_next_state_max = np.max(q_table[next_state])
+        Q_next_old = q_table[next_state, next_action]
 
-        Q_new = Q_old + params['alpha'] * (reward + params['gamma'] * Q_next_state_max - Q_old)
+        Q_new = Q_old + params['alpha'] * (reward + params['gamma'] * Q_next_old - Q_old)
 
         q_table[state, action] = Q_new
 
         state = next_state
+        action = next_action
 
     rewards.append(reward)
     r100 = np.mean(rewards[-100:])

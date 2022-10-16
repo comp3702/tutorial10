@@ -64,8 +64,8 @@ for episode_no in range(max_episodes):
 
         state = next_state
 
-    rewards.append(reward)
-    print(f"Episode {episode_no}, steps taken {frame_idx - episode_start}, reward: {reward}, R100: {np.mean(rewards[-100:])}, epsilon: {epsilon}")
+    rewards.append(episode_reward)
+    print(f"Episode {episode_no}, steps taken {frame_idx - episode_start}, reward: {episode_reward}, R100: {np.mean(rewards[-100:])}, epsilon: {epsilon}")
 
 print(f"Steps taken {frame_idx}")
 print("Q-Table:")
