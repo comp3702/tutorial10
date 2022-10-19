@@ -90,4 +90,5 @@ Gamma is a discount factor and it is usually set quite high around 0.9. It affec
 - don't over-train - it will lead to a brittle policy that depends on favourable starting position
 - make sure the final epsilon is very low (less than 0.01) and that your training actually reaches it / gets close
 - there's time to run 1000s of training episodes - use that time
-- it's possible to get solution with the default alpha and gamma, but they are not the best for fast convergence - experiment with a lower alpha and/or a slightly lower gamma   
+- it's possible to get solution with the default alpha and gamma, but they are not the best for fast convergence - experiment with a lower alpha and/or a slightly lower gamma
+- make sure your Q update has the full formula :-)
