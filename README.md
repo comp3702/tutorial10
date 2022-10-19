@@ -80,3 +80,14 @@ The best approach is to experiment a little and watch R100 / L100.
 
 #### Gamma
 Gamma is a discount factor and it is usually set quite high around 0.9. It affects the speed of convergence but I have rarely done much experimentation with it.
+
+### If/When You Get Stuck
+- __Make sure you have logging by episode set up - see the code for Q-learning/SARSA__ - the logs will show if the R100 is converging, how many steps you are taking per episode, if the epsilon is converging fast enough / too fast, etc. It is much harder to find the problem or tune the hyper-parameters if you don't see the progress.
+- Get the list of states same way as in A2 (there is a legit way of calling private methods in Python) if using ndarray for the q-table - or just use a dictionary with random number as a default value (e.g. `dict.get( (state, action), random.random())`)
+- if the bot is getting stuck (spinning, etc.) - make sure you have set max steps per episode to something reasonable (shouldn't be more than 100)
+- if the training is taking too long - your early termination is probably wrong - there should be 2 conditions for early termination - when the R100 has converged to some reasonable threshold (see above) or when you reach max number of episodes/steps. However, terminating because max number of episodes/steps was reached will return your last policy - NOT your best policy. Either tune the R100 threshold or keep a copy of the best policy every time the R100 is increased and on timeout return the best policy.
+- if you cannot reach the target test reward - start with test case 3, 4, 5 and 6. Try running the code multiple times - it's not possible to learn a random function but you may be lucky.
+- don't over-train - it will lead to a brittle policy that depends on favourable starting position
+- make sure the final epsilon is very low (less than 0.01) and that your training actually reaches it / gets close
+- there's time to run 1000s of training episodes - use that time
+- it's possible to get solution with the default alpha and gamma, but they are not the best for fast convergence - experiment with a lower alpha and/or a slightly lower gamma   
