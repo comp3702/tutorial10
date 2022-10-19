@@ -8,6 +8,7 @@ This is a significant departure from the official solutions:
 - unlike the official solution, consistently finds the same policy
 - includes sample hyper-parameters for solving basic OpenAI Gym problems (Taxi-v3, FrozenLake-v1, FrozenLake8x8-v1)
 - __provides ideas for hyper-parameter tuning__ - see at the bottom of this doc
+- __there is a section When You Get Stuck__ at the bottom with some helpful tips for Assignment 3
 
 ### Dependencies
 OpenAI Gym, PyYaml and Numpy
