@@ -93,3 +93,4 @@ Gamma is a discount factor and it is usually set quite high around 0.9. It affec
 - there's time to run 1000s of training episodes - use that time
 - it's possible to get solution with the default alpha and gamma, but they are not the best for fast convergence - experiment with a lower alpha and/or a slightly lower gamma
 - make sure your Q update has the full formula :-)
+- you don't need the UCB, but when doing epsilon greedy, use decaying (annealing) epsilon strategy (e.g. exponential)
