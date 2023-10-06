@@ -7,7 +7,7 @@ Taxi-v3:
   epsilon_decay: 1.0e+4
 
   max_frames: 1.0e+5
-  stopping_reward: 21
+  stopping_reward: 20
 
 FrozenLake-v1:
   alpha: 0.1

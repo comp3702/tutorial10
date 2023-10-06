@@ -23,11 +23,11 @@ env = gym.make(args.env)
 
 # Q table - a table of states x actions -> Q value for each possible action in each state
 # should be initialized randomly !!! except for Q[terminal] !!! - but we don't know which one is terminal
-q_table = np.zeros((env.observation_space.n, env.action_space.n))
+# q_table = np.zeros((env.observation_space.n, env.action_space.n))
+q_table = np.random.rand(env.observation_space.n, env.action_space.n)
 
 def choose_action(state: int, epsilon: float):
     if random.uniform(0, 1) < epsilon:
-        # explore - i.e. choose a random action
         return env.action_space.sample()
     else:
         return np.argmax(q_table[state])
